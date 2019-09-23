@@ -111,14 +111,14 @@ func main() {
 			_, err := target.Write(b[:n])
 
 			// Log proxy
-			ctxTargetLog.WithFields(log.Fields{
+			ctxLog := ctxLog.WithFields(log.Fields{
 				"target": target.RemoteAddr(),
 			})
 
 			if err != nil {
-				ctxTargetLog.Warn("Could not forward packet", err)
+				ctxLog.Warn("Could not forward packet", err)
 			} else {
-				ctxTargetLog.Debug("Wrote to target")
+				ctxLog.Debug("Wrote to target")
 			}
 		}
 	}
