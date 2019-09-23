@@ -1,5 +1,5 @@
 
-# Replicator [![Build Status](https://travis-ci.org/thomseddon/udp-replicator.svg?branch=master)](https://travis-ci.org/thomseddon/udp-replicator) [![Go Report Card](https://goreportcard.com/badge/github.com/thomseddon/udp-replicator)](https://goreportcard.com/report/github.com/thomseddon/udp-replicator)
+# Replicator [![Go Report Card](https://goreportcard.com/badge/github.com/thomseddon/udp-replicator)](https://goreportcard.com/report/github.com/thomseddon/udp-replicator)
 
 A tiny UDP proxy that can replicate traffic to one or more endpoints.
 
@@ -7,7 +7,7 @@ A tiny UDP proxy that can replicate traffic to one or more endpoints.
 
 We needed a way to take a single netflow stream and send it to multiple endpoints. As this is a generic UDP replicator, it can be used for any traffic such as netflow, syslog etc.
 
-You could use iptables, (like Zapier)[https://zapier.com/engineering/iptables-replication/], but we wanted something we could easily deploy into our kubernetes cluster. There are also a number of existing UDP proxies, but non of the popular ones support replication. There are also a small number of replicators, but these all seem to be mostly unmaintained/untested toy projects with little documentation.
+You could use iptables, [like Zapier](https://zapier.com/engineering/iptables-replication/), but we wanted something we could easily deploy into our kubernetes cluster. There are also a number of existing UDP proxies, but non of the popular ones support replication. There are also a small number of replicators, but these all seem to be mostly unmaintained/untested toy projects with little documentation.
 
 ## Usage
 
@@ -71,4 +71,4 @@ All configuration params can be passed as arguments as shown above, or as enviro
 
 ## License
 
-(MIT)[https://github.com/thomseddon/udp-replicator/blob/master/LICENSE.md]
+[MIT](https://github.com/thomseddon/udp-replicator/blob/master/LICENSE.md)
