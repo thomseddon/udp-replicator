@@ -22,17 +22,17 @@ time="2019-09-23T14:29:50+01:00" level=info msg="Forwarding target configured" a
 
 The above command will:
 
-- Start a UDP server listening on `0.0.0.0` (default) port `9500`
-- Add a forward target of `192.0.2.1:9500`
+- Start a UDP server listening on `0.0.0.0` (the default) port `9500`
+- Add a forward target of `192.0.2.1:9500` (uses `listen-port` for destination port as not specified in configuration)
 - Add another forward target of `198.51.100.5:9100`
 
-Any packet recieved by the server will be replicated and sent to both `192.0.2.1:9500` and `198.51.100.5:9100`
+The server will start listening on `0.0.0.0:9500`, any packet it receives will be replicated and sent to both `192.0.2.1:9500` and `198.51.100.5:9100`
 
 
 ### Docker
 
 ```
-docker run -it -e FORWARDS=$'192.0.2.1\n198.51.100.5:9100' thomseddon/udp-replicator:1
+docker run -e FORWARDS=$'192.0.2.1\n198.51.100.5:9100' thomseddon/udp-replicator:1
 ```
 
 ### Docker Compose
