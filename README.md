@@ -1,5 +1,5 @@
 
-# Replicator [![Go Report Card](https://goreportcard.com/badge/github.com/thomseddon/udp-replicator)](https://goreportcard.com/report/github.com/thomseddon/udp-replicator)
+# UDP Replicator [![Go Report Card](https://goreportcard.com/badge/github.com/thomseddon/udp-replicator)](https://goreportcard.com/report/github.com/thomseddon/udp-replicator)
 
 A tiny UDP proxy that can replicate traffic to one or more endpoints.
 
