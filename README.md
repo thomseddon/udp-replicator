@@ -32,7 +32,7 @@ The server will start listening on `0.0.0.0:9500`, any packet it receives will b
 ### Docker
 
 ```
-docker run -e FORWARDS=$'192.0.2.1\n198.51.100.5:9100' thomseddon/udp-replicator:1
+docker run -e FORWARD=$'192.0.2.1\n198.51.100.5:9100' thomseddon/udp-replicator:1
 ```
 
 ### Docker Compose
