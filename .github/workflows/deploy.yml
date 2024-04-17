@@ -32,7 +32,7 @@ jobs:
         with:
           images: ${{ env.REGISTRY }}/udp-replicator
           tags: |
-            type=raw,value=latest,enable={{is_default_branch}}
+            type=raw,value=latest
       - name: Build and push
         uses: docker/build-push-action@v5
         with:
@@ -40,20 +40,20 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    environment: test
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-      - name: Configure AWS credentials from Test account
-        uses: aws-actions/configure-aws-credentials@v4
-        with:
-          role-to-assume: arn:aws:iam::663295266123:role/eks-deploy
-          aws-region: eu-central-1
-      - name: Deploy
-        run: |
-          aws eks --region eu-central-1 update-kubeconfig --name test
-          kubectl apply -k deploy/kustomize/overlays/test
-          kubectl rollout restart -n udp-replicator deployment/udp-replicator
+#  deploy:
+#    needs: build
+#    runs-on: ubuntu-latest
+#    environment: test
+#    steps:
+#      - name: Checkout repository
+#        uses: actions/checkout@v4
+#      - name: Configure AWS credentials from Test account
+#        uses: aws-actions/configure-aws-credentials@v4
+#        with:
+#          role-to-assume: arn:aws:iam::663295266123:role/eks-deploy
+#          aws-region: eu-central-1
+#      - name: Deploy
+#        run: |
+#          aws eks --region eu-central-1 update-kubeconfig --name test
+#          kubectl apply -k deploy/kustomize/overlays/test
+#          kubectl rollout restart -n udp-replicator deployment/udp-replicator
