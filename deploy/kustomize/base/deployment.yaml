@@ -1,0 +1,42 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: udp-replicator
+spec:
+  replicas: 1
+  template:
+    spec:
+      serviceAccountName: udp-replicator
+      securityContext: {}
+      containers:
+        - name: udp-replicator
+          securityContext: {}
+          image: udp-replicator
+          imagePullPolicy: Always
+          env:
+            - name: "DEBUG"
+              value: "false"
+            - name: "FORWARD"
+              value: "replace me"
+            - name: "LISTEN_PORT"
+              value: "8600"
+          ports:
+            - name: udp
+              containerPort: 8600
+              protocol: UDP
+          resources: {}
+        # Required for the NLB healthcheck
+        # https://github.com/aws-samples/containerized-game-servers/tree/master/udp-nlb-sample/nginx-static-sidecar
+        - name: nginx
+          image: nginx:alpine
+          ports:
+            - name: tcp
+              containerPort: 80
+              protocol: TCP
+          resources: {}
+          readinessProbe:
+            tcpSocket:
+              port: 80
+            initialDelaySeconds: 10
+            periodSeconds: 10

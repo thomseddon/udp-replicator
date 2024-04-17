@@ -1,0 +1,12 @@
+---
+
+resources:
+  - deployment.yaml
+  - service.yaml
+  - serviceaccount.yaml
+
+commonLabels:
+  app.kubernetes.io/name: udp-replicator
+  app.kubernetes.io/instance: udp-replicator
+
+namespace: udp-replicator

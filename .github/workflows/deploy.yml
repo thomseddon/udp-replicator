@@ -1,0 +1,59 @@
+name: Deploy
+
+on:
+  workflow_dispatch:
+
+permissions:
+  id-token: write
+  contents: read
+  packages: write
+  checks: write
+  pull-requests: write
+  issues: read
+
+env:
+  REGISTRY: ghcr.io
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Log in to the Container registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/udp-replicator
+          tags: |
+            type=raw,value=latest,enable={{is_default_branch}}
+      - name: Build and push
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment: test
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Configure AWS credentials from Test account
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::663295266123:role/eks-deploy
+          aws-region: eu-central-1
+      - name: Deploy
+        run: |
+          aws eks --region eu-central-1 update-kubeconfig --name test
+          kubectl apply -k deploy/kustomize/overlays/test
+          kubectl rollout restart -n udp-replicator deployment/udp-replicator

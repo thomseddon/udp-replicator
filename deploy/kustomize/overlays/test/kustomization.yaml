@@ -1,0 +1,44 @@
+---
+resources:
+  - ../../base
+
+images:
+  - name: udp-replicator
+    newName: "ghcr.io/databeacon/udp-replicator"
+    newTag: "latest"
+
+patches:
+  - target:
+      kind: Deployment
+      name: udp-replicator
+    patch: |-
+      - op: add
+        path: "/spec/template/spec/imagePullSecrets"
+        value:
+          - name: ghcr-regcred
+  - target:
+      kind: Service
+      name: udp-replicator
+    patch: |-
+      kind: Service
+      metadata:
+        name: udp-replicator
+        annotations:
+          service.beta.kubernetes.io/aws-load-balancer-subnets: "subnet-0dfcb4cf371606462"
+          service.beta.kubernetes.io/aws-load-balancer-eip-allocations: "eipalloc-051380dcb162296cc"
+  - target:
+      kind: Deployment
+      name: udp-replicator
+    patch: |-
+      kind: Deployment
+      metadata:
+        name: udp-replicator
+      spec:
+        template:
+          spec:
+            containers:
+              - name: udp-replicator
+                env:
+                  - name: "FORWARD"
+                    value: |-
+                      ingestor.analytics.svc.cluster.local:6667
